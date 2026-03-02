@@ -32,7 +32,7 @@
     "headings",
     "underline"
   ],
-  "author": "greetclammy",
+  "author": "churnish",
   "license": "GPL-3.0",
   "devDependencies": {
     "@types/node": "^24.10.1",
