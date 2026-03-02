@@ -10,7 +10,10 @@
     "lint": "eslint src/",
     "format": "prettier --write src/",
     "css": "true",
-    "knip": "knip"
+    "knip": "knip",
+    "preversion": "node version-bump.mjs --preflight",
+    "version": "node version-bump.mjs",
+    "postversion": "git push origin main --follow-tags --force-with-lease"
   },
   "knip": {
     "entry": [

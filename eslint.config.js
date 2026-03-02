@@ -21,6 +21,6 @@ export default defineConfig([
     },
   },
   {
-    ignores: ['main.js', 'node_modules/', '*.config.*'],
+    ignores: ['main.js', 'node_modules/', '*.config.*', 'version-bump.mjs'],
   },
 ]);
