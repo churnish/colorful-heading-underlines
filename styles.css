@@ -376,336 +376,620 @@ settings:
 
 /* Default values */
 body {
-    --chu-underline-height: 4px;
-    --chu-underline-border-radius: 8px;
-    --chu-underline-opacity: 50%;
-    --chu-position-read: 0em;
-    --chu-position-edit: -0.4em;
-    --chu-padding: 0.5em;
+  --chu-underline-height: 4px;
+  --chu-underline-border-radius: 8px;
+  --chu-underline-opacity: 50%;
+  --chu-position-read: 0em;
+  --chu-position-edit: -0.4em;
+  --chu-padding: 0.5em;
 }
 
 /* Reading view */
 .markdown-preview-view :is(h1, h2, h3, h4, h5, h6) {
-    padding-bottom: var(--chu-padding);
-    position: relative;
+  padding-bottom: var(--chu-padding);
+  position: relative;
 }
 
 .markdown-preview-view :is(h1, h2, h3, h4, h5, h6)::before {
-    content: '';
-    position: absolute;
-    bottom: var(--chu-position-read);
-    left: 0;
-    width: var(--underline-width);
-    height: var(--chu-underline-height);
-    border-radius: var(--chu-underline-border-radius);
-    z-index: 0;
+  content: '';
+  position: absolute;
+  bottom: var(--chu-position-read);
+  left: 0;
+  width: var(--underline-width);
+  height: var(--chu-underline-height);
+  border-radius: var(--chu-underline-border-radius);
+  z-index: 0;
 }
 
 body.chu-width-full .markdown-preview-view :is(h1, h2, h3, h4, h5, h6)::before {
-    width: 100%;
+  width: 100%;
 }
 
 /* Editing view */
-.cm-line:is(.HyperMD-header-1, .HyperMD-header-2, .HyperMD-header-3, .HyperMD-header-4, .HyperMD-header-5, .HyperMD-header-6) {
-    position: relative;
-    padding-bottom: var(--chu-padding);
-    margin-bottom: 1em !important;
+.cm-line:is(
+  .HyperMD-header-1,
+  .HyperMD-header-2,
+  .HyperMD-header-3,
+  .HyperMD-header-4,
+  .HyperMD-header-5,
+  .HyperMD-header-6
+) {
+  position: relative;
+  padding-bottom: var(--chu-padding);
+  margin-bottom: 1em !important;
 }
 
-.cm-line:is(.HyperMD-header-1, .HyperMD-header-2, .HyperMD-header-3, .HyperMD-header-4, .HyperMD-header-5, .HyperMD-header-6)::before {
-    content: '';
-    position: absolute;
-    bottom: var(--chu-position-edit);
-    left: 0;
-    width: var(--underline-width);
-    height: var(--chu-underline-height);
-    border-radius: var(--chu-underline-border-radius);
-    z-index: 0;
+.cm-line:is(
+    .HyperMD-header-1,
+    .HyperMD-header-2,
+    .HyperMD-header-3,
+    .HyperMD-header-4,
+    .HyperMD-header-5,
+    .HyperMD-header-6
+  )::before {
+  content: '';
+  position: absolute;
+  bottom: var(--chu-position-edit);
+  left: 0;
+  width: var(--underline-width);
+  height: var(--chu-underline-height);
+  border-radius: var(--chu-underline-border-radius);
+  z-index: 0;
 }
 
-body.chu-width-full .cm-line:is(.HyperMD-header-1, .HyperMD-header-2, .HyperMD-header-3, .HyperMD-header-4, .HyperMD-header-5, .HyperMD-header-6)::before {
-    width: 100%;
+body.chu-width-full
+  .cm-line:is(
+    .HyperMD-header-1,
+    .HyperMD-header-2,
+    .HyperMD-header-3,
+    .HyperMD-header-4,
+    .HyperMD-header-5,
+    .HyperMD-header-6
+  )::before {
+  width: 100%;
 }
 
 /* Add space to line following a heading */
-.cm-line:is(.HyperMD-header-1, .HyperMD-header-2, .HyperMD-header-3, .HyperMD-header-4, .HyperMD-header-5, .HyperMD-header-6) + .cm-line {
-    margin-top: 0.8em !important;
+.cm-line:is(
+    .HyperMD-header-1,
+    .HyperMD-header-2,
+    .HyperMD-header-3,
+    .HyperMD-header-4,
+    .HyperMD-header-5,
+    .HyperMD-header-6
+  )
+  + .cm-line {
+  margin-top: 0.8em !important;
 }
 
 /* ========== DISABLE OPTIONS ========== */
 body.chu-h1-color-disable .markdown-preview-view h1::before,
 body.chu-h1-color-disable .cm-line.HyperMD-header-1::before {
-    display: none;
+  display: none;
 }
 body.chu-h2-color-disable .markdown-preview-view h2::before,
 body.chu-h2-color-disable .cm-line.HyperMD-header-2::before {
-    display: none;
+  display: none;
 }
 body.chu-h3-color-disable .markdown-preview-view h3::before,
 body.chu-h3-color-disable .cm-line.HyperMD-header-3::before {
-    display: none;
+  display: none;
 }
 body.chu-h4-color-disable .markdown-preview-view h4::before,
 body.chu-h4-color-disable .cm-line.HyperMD-header-4::before {
-    display: none;
+  display: none;
 }
 body.chu-h5-color-disable .markdown-preview-view h5::before,
 body.chu-h5-color-disable .cm-line.HyperMD-header-5::before {
-    display: none;
+  display: none;
 }
 body.chu-h6-color-disable .markdown-preview-view h6::before,
 body.chu-h6-color-disable .cm-line.HyperMD-header-6::before {
-    display: none;
+  display: none;
+}
+
+/* Per-note disable via YAML cssclass */
+.markdown-preview-view.hide-heading-underlines :is(h1, h2, h3, h4, h5, h6)::before,
+.hide-heading-underlines
+  .cm-line:is(
+    .HyperMD-header-1,
+    .HyperMD-header-2,
+    .HyperMD-header-3,
+    .HyperMD-header-4,
+    .HyperMD-header-5,
+    .HyperMD-header-6
+  )::before {
+  display: none;
 }
 
 /* ========== H1 COLORS ========== */
 body.chu-h1-color-accent .markdown-preview-view h1::before,
 body.chu-h1-color-accent .cm-line.HyperMD-header-1::before {
-    background-color: color-mix(in srgb, var(--color-accent) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-accent) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h1-color-red .markdown-preview-view h1::before,
 body.chu-h1-color-red .cm-line.HyperMD-header-1::before {
-    background-color: color-mix(in srgb, var(--color-red) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-red) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h1-color-orange .markdown-preview-view h1::before,
 body.chu-h1-color-orange .cm-line.HyperMD-header-1::before {
-    background-color: color-mix(in srgb, var(--color-orange) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-orange) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h1-color-yellow .markdown-preview-view h1::before,
 body.chu-h1-color-yellow .cm-line.HyperMD-header-1::before {
-    background-color: color-mix(in srgb, var(--color-yellow) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-yellow) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h1-color-green .markdown-preview-view h1::before,
 body.chu-h1-color-green .cm-line.HyperMD-header-1::before {
-    background-color: color-mix(in srgb, var(--color-green) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-green) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h1-color-cyan .markdown-preview-view h1::before,
 body.chu-h1-color-cyan .cm-line.HyperMD-header-1::before {
-    background-color: color-mix(in srgb, var(--color-cyan) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-cyan) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h1-color-blue .markdown-preview-view h1::before,
 body.chu-h1-color-blue .cm-line.HyperMD-header-1::before {
-    background-color: color-mix(in srgb, var(--color-blue) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-blue) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h1-color-purple .markdown-preview-view h1::before,
 body.chu-h1-color-purple .cm-line.HyperMD-header-1::before {
-    background-color: color-mix(in srgb, var(--color-purple) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-purple) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h1-color-pink .markdown-preview-view h1::before,
 body.chu-h1-color-pink .cm-line.HyperMD-header-1::before {
-    background-color: color-mix(in srgb, var(--color-pink) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-pink) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h1-color-custom .markdown-preview-view h1::before,
 body.chu-h1-color-custom .cm-line.HyperMD-header-1::before {
-    background-color: color-mix(in srgb, var(--chu-h1-color-custom) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--chu-h1-color-custom) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 
 /* ========== H2 COLORS ========== */
 body.chu-h2-color-accent .markdown-preview-view h2::before,
 body.chu-h2-color-accent .cm-line.HyperMD-header-2::before {
-    background-color: color-mix(in srgb, var(--color-accent) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-accent) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h2-color-red .markdown-preview-view h2::before,
 body.chu-h2-color-red .cm-line.HyperMD-header-2::before {
-    background-color: color-mix(in srgb, var(--color-red) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-red) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h2-color-orange .markdown-preview-view h2::before,
 body.chu-h2-color-orange .cm-line.HyperMD-header-2::before {
-    background-color: color-mix(in srgb, var(--color-orange) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-orange) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h2-color-yellow .markdown-preview-view h2::before,
 body.chu-h2-color-yellow .cm-line.HyperMD-header-2::before {
-    background-color: color-mix(in srgb, var(--color-yellow) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-yellow) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h2-color-green .markdown-preview-view h2::before,
 body.chu-h2-color-green .cm-line.HyperMD-header-2::before {
-    background-color: color-mix(in srgb, var(--color-green) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-green) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h2-color-cyan .markdown-preview-view h2::before,
 body.chu-h2-color-cyan .cm-line.HyperMD-header-2::before {
-    background-color: color-mix(in srgb, var(--color-cyan) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-cyan) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h2-color-blue .markdown-preview-view h2::before,
 body.chu-h2-color-blue .cm-line.HyperMD-header-2::before {
-    background-color: color-mix(in srgb, var(--color-blue) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-blue) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h2-color-purple .markdown-preview-view h2::before,
 body.chu-h2-color-purple .cm-line.HyperMD-header-2::before {
-    background-color: color-mix(in srgb, var(--color-purple) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-purple) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h2-color-pink .markdown-preview-view h2::before,
 body.chu-h2-color-pink .cm-line.HyperMD-header-2::before {
-    background-color: color-mix(in srgb, var(--color-pink) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-pink) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h2-color-custom .markdown-preview-view h2::before,
 body.chu-h2-color-custom .cm-line.HyperMD-header-2::before {
-    background-color: color-mix(in srgb, var(--chu-h2-color-custom) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--chu-h2-color-custom) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 
 /* ========== H3 COLORS ========== */
 body.chu-h3-color-accent .markdown-preview-view h3::before,
 body.chu-h3-color-accent .cm-line.HyperMD-header-3::before {
-    background-color: color-mix(in srgb, var(--color-accent) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-accent) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h3-color-red .markdown-preview-view h3::before,
 body.chu-h3-color-red .cm-line.HyperMD-header-3::before {
-    background-color: color-mix(in srgb, var(--color-red) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-red) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h3-color-orange .markdown-preview-view h3::before,
 body.chu-h3-color-orange .cm-line.HyperMD-header-3::before {
-    background-color: color-mix(in srgb, var(--color-orange) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-orange) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h3-color-yellow .markdown-preview-view h3::before,
 body.chu-h3-color-yellow .cm-line.HyperMD-header-3::before {
-    background-color: color-mix(in srgb, var(--color-yellow) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-yellow) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h3-color-green .markdown-preview-view h3::before,
 body.chu-h3-color-green .cm-line.HyperMD-header-3::before {
-    background-color: color-mix(in srgb, var(--color-green) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-green) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h3-color-cyan .markdown-preview-view h3::before,
 body.chu-h3-color-cyan .cm-line.HyperMD-header-3::before {
-    background-color: color-mix(in srgb, var(--color-cyan) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-cyan) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h3-color-blue .markdown-preview-view h3::before,
 body.chu-h3-color-blue .cm-line.HyperMD-header-3::before {
-    background-color: color-mix(in srgb, var(--color-blue) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-blue) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h3-color-purple .markdown-preview-view h3::before,
 body.chu-h3-color-purple .cm-line.HyperMD-header-3::before {
-    background-color: color-mix(in srgb, var(--color-purple) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-purple) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h3-color-pink .markdown-preview-view h3::before,
 body.chu-h3-color-pink .cm-line.HyperMD-header-3::before {
-    background-color: color-mix(in srgb, var(--color-pink) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-pink) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h3-color-custom .markdown-preview-view h3::before,
 body.chu-h3-color-custom .cm-line.HyperMD-header-3::before {
-    background-color: color-mix(in srgb, var(--chu-h3-color-custom) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--chu-h3-color-custom) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 
 /* ========== H4 COLORS ========== */
 body.chu-h4-color-accent .markdown-preview-view h4::before,
 body.chu-h4-color-accent .cm-line.HyperMD-header-4::before {
-    background-color: color-mix(in srgb, var(--color-accent) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-accent) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h4-color-red .markdown-preview-view h4::before,
 body.chu-h4-color-red .cm-line.HyperMD-header-4::before {
-    background-color: color-mix(in srgb, var(--color-red) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-red) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h4-color-orange .markdown-preview-view h4::before,
 body.chu-h4-color-orange .cm-line.HyperMD-header-4::before {
-    background-color: color-mix(in srgb, var(--color-orange) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-orange) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h4-color-yellow .markdown-preview-view h4::before,
 body.chu-h4-color-yellow .cm-line.HyperMD-header-4::before {
-    background-color: color-mix(in srgb, var(--color-yellow) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-yellow) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h4-color-green .markdown-preview-view h4::before,
 body.chu-h4-color-green .cm-line.HyperMD-header-4::before {
-    background-color: color-mix(in srgb, var(--color-green) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-green) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h4-color-cyan .markdown-preview-view h4::before,
 body.chu-h4-color-cyan .cm-line.HyperMD-header-4::before {
-    background-color: color-mix(in srgb, var(--color-cyan) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-cyan) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h4-color-blue .markdown-preview-view h4::before,
 body.chu-h4-color-blue .cm-line.HyperMD-header-4::before {
-    background-color: color-mix(in srgb, var(--color-blue) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-blue) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h4-color-purple .markdown-preview-view h4::before,
 body.chu-h4-color-purple .cm-line.HyperMD-header-4::before {
-    background-color: color-mix(in srgb, var(--color-purple) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-purple) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h4-color-pink .markdown-preview-view h4::before,
 body.chu-h4-color-pink .cm-line.HyperMD-header-4::before {
-    background-color: color-mix(in srgb, var(--color-pink) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-pink) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h4-color-custom .markdown-preview-view h4::before,
 body.chu-h4-color-custom .cm-line.HyperMD-header-4::before {
-    background-color: color-mix(in srgb, var(--chu-h4-color-custom) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--chu-h4-color-custom) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 
 /* ========== H5 COLORS ========== */
 body.chu-h5-color-accent .markdown-preview-view h5::before,
 body.chu-h5-color-accent .cm-line.HyperMD-header-5::before {
-    background-color: color-mix(in srgb, var(--color-accent) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-accent) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h5-color-red .markdown-preview-view h5::before,
 body.chu-h5-color-red .cm-line.HyperMD-header-5::before {
-    background-color: color-mix(in srgb, var(--color-red) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-red) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h5-color-orange .markdown-preview-view h5::before,
 body.chu-h5-color-orange .cm-line.HyperMD-header-5::before {
-    background-color: color-mix(in srgb, var(--color-orange) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-orange) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h5-color-yellow .markdown-preview-view h5::before,
 body.chu-h5-color-yellow .cm-line.HyperMD-header-5::before {
-    background-color: color-mix(in srgb, var(--color-yellow) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-yellow) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h5-color-green .markdown-preview-view h5::before,
 body.chu-h5-color-green .cm-line.HyperMD-header-5::before {
-    background-color: color-mix(in srgb, var(--color-green) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-green) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h5-color-cyan .markdown-preview-view h5::before,
 body.chu-h5-color-cyan .cm-line.HyperMD-header-5::before {
-    background-color: color-mix(in srgb, var(--color-cyan) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-cyan) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h5-color-blue .markdown-preview-view h5::before,
 body.chu-h5-color-blue .cm-line.HyperMD-header-5::before {
-    background-color: color-mix(in srgb, var(--color-blue) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-blue) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h5-color-purple .markdown-preview-view h5::before,
 body.chu-h5-color-purple .cm-line.HyperMD-header-5::before {
-    background-color: color-mix(in srgb, var(--color-purple) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-purple) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h5-color-pink .markdown-preview-view h5::before,
 body.chu-h5-color-pink .cm-line.HyperMD-header-5::before {
-    background-color: color-mix(in srgb, var(--color-pink) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-pink) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h5-color-custom .markdown-preview-view h5::before,
 body.chu-h5-color-custom .cm-line.HyperMD-header-5::before {
-    background-color: color-mix(in srgb, var(--chu-h5-color-custom) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--chu-h5-color-custom) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 
 /* ========== H6 COLORS ========== */
 body.chu-h6-color-accent .markdown-preview-view h6::before,
 body.chu-h6-color-accent .cm-line.HyperMD-header-6::before {
-    background-color: color-mix(in srgb, var(--color-accent) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-accent) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h6-color-red .markdown-preview-view h6::before,
 body.chu-h6-color-red .cm-line.HyperMD-header-6::before {
-    background-color: color-mix(in srgb, var(--color-red) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-red) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h6-color-orange .markdown-preview-view h6::before,
 body.chu-h6-color-orange .cm-line.HyperMD-header-6::before {
-    background-color: color-mix(in srgb, var(--color-orange) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-orange) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h6-color-yellow .markdown-preview-view h6::before,
 body.chu-h6-color-yellow .cm-line.HyperMD-header-6::before {
-    background-color: color-mix(in srgb, var(--color-yellow) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-yellow) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h6-color-green .markdown-preview-view h6::before,
 body.chu-h6-color-green .cm-line.HyperMD-header-6::before {
-    background-color: color-mix(in srgb, var(--color-green) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-green) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h6-color-cyan .markdown-preview-view h6::before,
 body.chu-h6-color-cyan .cm-line.HyperMD-header-6::before {
-    background-color: color-mix(in srgb, var(--color-cyan) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-cyan) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h6-color-blue .markdown-preview-view h6::before,
 body.chu-h6-color-blue .cm-line.HyperMD-header-6::before {
-    background-color: color-mix(in srgb, var(--color-blue) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-blue) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h6-color-purple .markdown-preview-view h6::before,
 body.chu-h6-color-purple .cm-line.HyperMD-header-6::before {
-    background-color: color-mix(in srgb, var(--color-purple) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-purple) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h6-color-pink .markdown-preview-view h6::before,
 body.chu-h6-color-pink .cm-line.HyperMD-header-6::before {
-    background-color: color-mix(in srgb, var(--color-pink) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-pink) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
 body.chu-h6-color-custom .markdown-preview-view h6::before,
 body.chu-h6-color-custom .cm-line.HyperMD-header-6::before {
-    background-color: color-mix(in srgb, var(--chu-h6-color-custom) var(--chu-underline-opacity, 50%), transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--chu-h6-color-custom) var(--chu-underline-opacity, 50%),
+    transparent
+  );
 }
