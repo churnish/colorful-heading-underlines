@@ -16,7 +16,7 @@ Until _Colorful Heading Underlines_ is [made available](https://github.com/obsid
 
 1. Download and enable the [BRAT](https://obsidian.md/plugins?id=obsidian42-brat) plugin.
 2. Run _Add a beta plugin for testing_ in the Command palette.
-3. Paste https://github.com/churnish/colorful-heading-underlines in the text field.
+3. Paste https://github.com/churnish/colorful-heading-underlines.
 4. Select _Latest version_.
 5. Check _Enable after installing the plugin_.
 6. Press _Add Plugin_.
@@ -34,4 +34,6 @@ Until _Colorful Heading Underlines_ is [made available](https://github.com/obsid
 
 ## Support
 
-Found a bug or have a feature request? [Open an issue](https://github.com/churnish/colorful-heading-underlines/issues).
+- Found a bug or have a feature request? [Open an issue](https://github.com/churnish/colorful-heading-underlines/issues).
+- Have a question? [Start a discussion](https://github.com/churnish/colorful-heading-underlines/discussions).
+- PRs welcome.

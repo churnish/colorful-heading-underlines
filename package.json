@@ -22,8 +22,15 @@
     "project": [
       "src/**/*.ts"
     ],
-    "ignoreDependencies": ["@typescript-eslint/eslint-plugin", "prettier"],
-    "ignoreBinaries": ["eslint", "prettier", "knip"],
+    "ignoreDependencies": [
+      "@typescript-eslint/eslint-plugin",
+      "prettier"
+    ],
+    "ignoreBinaries": [
+      "eslint",
+      "prettier",
+      "knip"
+    ],
     "ignoreExportsUsedInFile": true
   },
   "keywords": [
@@ -35,6 +42,7 @@
   "author": "churnish",
   "license": "GPL-3.0",
   "devDependencies": {
+    "@eslint-community/eslint-plugin-eslint-comments": "^4.7.1",
     "@types/node": "^24.10.1",
     "@typescript-eslint/eslint-plugin": "^8.52.0",
     "@typescript-eslint/parser": "^8.52.0",
