@@ -1,28 +1,36 @@
-import tsparser from '@typescript-eslint/parser';
 import { defineConfig } from 'eslint/config';
+import globals from 'globals';
 import obsidianmd from 'eslint-plugin-obsidianmd';
 import comments from '@eslint-community/eslint-plugin-eslint-comments/configs';
-import globals from 'globals';
 
 export default defineConfig([
-  ...obsidianmd.configs.recommended,
   {
-    files: ['src/**/*.ts'],
+    ignores: ['**', '!src/**', '!main.ts'],
+  },
+
+  ...obsidianmd.configs.recommended,
+
+  {
     languageOptions: {
-      parser: tsparser,
-      parserOptions: {
-        project: './tsconfig.json',
-      },
       globals: {
         ...globals.browser,
       },
-    },
-    rules: {
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
   },
+
   {
-    ignores: ['main.js', 'node_modules/', '*.config.*', 'version-bump.mjs'],
+    files: ['**/*.ts'],
+    rules: {
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { args: 'none', varsIgnorePattern: '^_' },
+      ],
+      'no-undef': 'off',
+    },
   },
 
   // Block eslint-disable for obsidianmd/* rules (bot strips all directives)

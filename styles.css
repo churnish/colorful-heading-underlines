@@ -489,7 +489,8 @@ body.chu-h6-color-disable .cm-line.HyperMD-header-6::before {
 }
 
 /* Per-note disable via YAML cssclass */
-.markdown-preview-view.hide-heading-underlines :is(h1, h2, h3, h4, h5, h6)::before,
+.markdown-preview-view.hide-heading-underlines
+  :is(h1, h2, h3, h4, h5, h6)::before,
 .hide-heading-underlines
   .cm-line:is(
     .HyperMD-header-1,

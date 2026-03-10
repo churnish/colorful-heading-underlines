@@ -64,14 +64,19 @@ export default class ColorfulHeadingUnderlinePlugin extends Plugin {
   private setupObserver(): void {
     this.observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
-        if (mutation.type === 'attributes' && mutation.target === document.body) {
+        if (
+          mutation.type === 'attributes' &&
+          mutation.target === document.body
+        ) {
           this.processAllHeadings();
           return;
         }
 
         const target = mutation.target;
         if (target.nodeType === Node.ELEMENT_NODE) {
-          if ((target as Element).closest('.markdown-preview-view, .cm-editor')) {
+          if (
+            (target as Element).closest('.markdown-preview-view, .cm-editor')
+          ) {
             this.processAllHeadings();
             return;
           }
@@ -98,12 +103,16 @@ export default class ColorfulHeadingUnderlinePlugin extends Plugin {
     const readingHeadings = document.querySelectorAll(
       '.markdown-preview-view h1, .markdown-preview-view h2, .markdown-preview-view h3, .markdown-preview-view h4, .markdown-preview-view h5, .markdown-preview-view h6'
     );
-    readingHeadings.forEach((heading) => this.processHeading(heading as HTMLElement));
+    readingHeadings.forEach((heading) =>
+      this.processHeading(heading as HTMLElement)
+    );
 
     const editingLines = document.querySelectorAll(
       '.cm-line.HyperMD-header-1, .cm-line.HyperMD-header-2, .cm-line.HyperMD-header-3, .cm-line.HyperMD-header-4, .cm-line.HyperMD-header-5, .cm-line.HyperMD-header-6'
     );
-    editingLines.forEach((line) => this.processEditingLine(line as HTMLElement));
+    editingLines.forEach((line) =>
+      this.processEditingLine(line as HTMLElement)
+    );
   }
 
   private processHeading(heading: HTMLElement): void {
@@ -132,9 +141,9 @@ export default class ColorfulHeadingUnderlinePlugin extends Plugin {
     if (mode === 'last') {
       width = rects[rects.length - 1].width;
     } else {
-      for (const rect of rects) {
-        if (rect.width > width) {
-          width = rect.width;
+      for (let i = 0; i < rects.length; i++) {
+        if (rects[i].width > width) {
+          width = rects[i].width;
         }
       }
     }
@@ -165,11 +174,16 @@ export default class ColorfulHeadingUnderlinePlugin extends Plugin {
     const lineGroups: LineGroup[] = [];
     let currentLineGroup: LineGroup | null = null;
 
-    for (const rect of rects) {
+    for (let i = 0; i < rects.length; i++) {
+      const rect = rects[i];
       if (rect.width === 0) continue;
 
       if (!currentLineGroup || Math.abs(rect.top - currentLineGroup.top) > 2) {
-        currentLineGroup = { top: rect.top, left: rect.left, right: rect.right };
+        currentLineGroup = {
+          top: rect.top,
+          left: rect.left,
+          right: rect.right,
+        };
         lineGroups.push(currentLineGroup);
       } else {
         currentLineGroup.left = Math.min(currentLineGroup.left, rect.left);
