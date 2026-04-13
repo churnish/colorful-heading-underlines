@@ -169,18 +169,19 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
 
   processAllHeadings() {
     const mode = this.getWidthMode();
+    const HEADING_TAGS = new Set(['H1', 'H2', 'H3', 'H4', 'H5', 'H6']);
     for (const doc of this.getAllDocuments()) {
       doc
         .querySelectorAll(
-          '.markdown-preview-view h1, .markdown-preview-view h2, .markdown-preview-view h3, .markdown-preview-view h4, .markdown-preview-view h5, .markdown-preview-view h6',
+          '.markdown-preview-view :is(h1, h2, h3, h4, h5, h6), .cm-line:is(.HyperMD-header-1, .HyperMD-header-2, .HyperMD-header-3, .HyperMD-header-4, .HyperMD-header-5, .HyperMD-header-6)',
         )
-        .forEach((heading) => this.processHeading(heading, mode));
-
-      doc
-        .querySelectorAll(
-          '.cm-line.HyperMD-header-1, .cm-line.HyperMD-header-2, .cm-line.HyperMD-header-3, .cm-line.HyperMD-header-4, .cm-line.HyperMD-header-5, .cm-line.HyperMD-header-6',
-        )
-        .forEach((line) => this.processEditingLine(line, mode));
+        .forEach((el) => {
+          if (HEADING_TAGS.has(el.tagName)) {
+            this.processHeading(el, mode);
+          } else {
+            this.processEditingLine(el, mode);
+          }
+        });
     }
   }
 

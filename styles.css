@@ -396,7 +396,7 @@ body:not(.chu-h6-color-custom)
   display: none !important;
 }
 
-/* Default values */
+/* ========== DEFAULT VALUES ========== */
 body {
   --chu-underline-height: 4px;
   --chu-underline-border-radius: 8px;
@@ -406,7 +406,7 @@ body {
   --chu-padding: 0.5em;
 }
 
-/* Reading view */
+/* ========== READING VIEW ========== */
 .markdown-preview-view :is(h1, h2, h3, h4, h5, h6) {
   padding-bottom: var(--chu-padding);
   position: relative;
@@ -427,7 +427,7 @@ body.chu-width-full .markdown-preview-view :is(h1, h2, h3, h4, h5, h6)::before {
   width: 100%;
 }
 
-/* Editing view */
+/* ========== EDITING VIEW ========== */
 .cm-line:is(
   .HyperMD-header-1,
   .HyperMD-header-2,
@@ -471,7 +471,7 @@ body.chu-width-full
   width: 100%;
 }
 
-/* Add space to line following a heading */
+/* ========== HEADING SIBLING SPACING ========== */
 .cm-line:is(
     .HyperMD-header-1,
     .HyperMD-header-2,
@@ -510,7 +510,36 @@ body.chu-h6-color-disable .cm-line.HyperMD-header-6::before {
   display: none;
 }
 
-/* Per-note disable via cssclass property */
+/* Reset spacing when heading level is disabled */
+body.chu-h1-color-disable .markdown-preview-view h1,
+body.chu-h2-color-disable .markdown-preview-view h2,
+body.chu-h3-color-disable .markdown-preview-view h3,
+body.chu-h4-color-disable .markdown-preview-view h4,
+body.chu-h5-color-disable .markdown-preview-view h5,
+body.chu-h6-color-disable .markdown-preview-view h6 {
+  padding-bottom: 0;
+}
+
+body.chu-h1-color-disable .cm-line.HyperMD-header-1,
+body.chu-h2-color-disable .cm-line.HyperMD-header-2,
+body.chu-h3-color-disable .cm-line.HyperMD-header-3,
+body.chu-h4-color-disable .cm-line.HyperMD-header-4,
+body.chu-h5-color-disable .cm-line.HyperMD-header-5,
+body.chu-h6-color-disable .cm-line.HyperMD-header-6 {
+  padding-bottom: 0;
+  margin-bottom: 0 !important;
+}
+
+body.chu-h1-color-disable .cm-line.HyperMD-header-1 + .cm-line,
+body.chu-h2-color-disable .cm-line.HyperMD-header-2 + .cm-line,
+body.chu-h3-color-disable .cm-line.HyperMD-header-3 + .cm-line,
+body.chu-h4-color-disable .cm-line.HyperMD-header-4 + .cm-line,
+body.chu-h5-color-disable .cm-line.HyperMD-header-5 + .cm-line,
+body.chu-h6-color-disable .cm-line.HyperMD-header-6 + .cm-line {
+  margin-top: 0 !important;
+}
+
+/* ========== PER-NOTE DISABLE ========== */
 .markdown-preview-view.hide-heading-underlines
   :is(h1, h2, h3, h4, h5, h6)::before,
 .hide-heading-underlines
