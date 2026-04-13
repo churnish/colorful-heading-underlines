@@ -14,6 +14,8 @@ const TEXT_NODE_FILTER = {
   },
 };
 
+const HEADING_TAGS = new Set(['H1', 'H2', 'H3', 'H4', 'H5', 'H6']);
+
 class ColorfulHeadingUnderlinePlugin extends Plugin {
   onload() {
     /** @type {Map<Document, {observer: MutationObserver, removeSelection: () => void}>} */
@@ -152,6 +154,7 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
     }
   }
 
+  // Coalesces all pending triggers into one RAF — subsequent calls while a frame is queued are dropped
   scheduleProcess() {
     if (this._rafId) return;
     this._rafId = requestAnimationFrame(() => {
@@ -169,32 +172,30 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
 
   processAllHeadings() {
     const mode = this.getWidthMode();
-    const HEADING_TAGS = new Set(['H1', 'H2', 'H3', 'H4', 'H5', 'H6']);
     for (const doc of this.getAllDocuments()) {
-      doc
-        .querySelectorAll(
-          '.markdown-preview-view :is(h1, h2, h3, h4, h5, h6), .cm-line:is(.HyperMD-header-1, .HyperMD-header-2, .HyperMD-header-3, .HyperMD-header-4, .HyperMD-header-5, .HyperMD-header-6)',
-        )
-        .forEach((el) => {
-          if (HEADING_TAGS.has(el.tagName)) {
-            this.processHeading(el, mode);
-          } else {
-            this.processEditingLine(el, mode);
-          }
-        });
+      for (const el of doc.querySelectorAll(
+        '.markdown-preview-view :is(h1, h2, h3, h4, h5, h6), .cm-line:is(.HyperMD-header-1, .HyperMD-header-2, .HyperMD-header-3, .HyperMD-header-4, .HyperMD-header-5, .HyperMD-header-6)',
+      )) {
+        if (HEADING_TAGS.has(el.tagName)) {
+          this.processHeading(el, mode);
+        } else {
+          this.processEditingLine(el, mode);
+        }
+      }
     }
   }
 
   processHeading(heading, mode) {
     if (mode === 'full') {
+      // Must set inline — a prior mode may have written a px value that the CSS class rule can't override
       heading.style.setProperty('--underline-width', '100%');
       return;
     }
 
-    const range = heading.ownerDocument.createRange();
     const textNodes = this.getTextNodes(heading);
-
     if (textNodes.length === 0) return;
+
+    const range = heading.ownerDocument.createRange();
 
     const firstNode = textNodes[0];
     const lastNode = textNodes[textNodes.length - 1];
@@ -225,12 +226,16 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
 
   processEditingLine(line, mode) {
     if (mode === 'full') {
+      // Must set inline — a prior mode may have written a px value that the CSS class rule can't override
       line.style.setProperty('--underline-width', '100%');
       return;
     }
 
     const headerSpans = line.querySelectorAll('.cm-header');
-    if (headerSpans.length === 0) return;
+    if (headerSpans.length === 0) {
+      line.style.removeProperty('--underline-width');
+      return;
+    }
 
     const range = line.ownerDocument.createRange();
     range.setStartBefore(headerSpans[0]);
