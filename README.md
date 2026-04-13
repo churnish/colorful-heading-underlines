@@ -1,6 +1,6 @@
 # Colorful Heading Underlines
 
-Show colorful underlines to identify heading levels.
+Add colorful underlines to identify heading levels.
 
 ![](https://forum.obsidian.md/uploads/default/original/3X/d/e/deb406d6d302c95c422a7601c8c268f1b7bfc072.jpeg)
 

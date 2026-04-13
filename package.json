@@ -1,6 +1,6 @@
 {
   "name": "colorful-heading-underlines",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Show colorful underlines to identify heading levels.",
   "main": "main.js",
   "scripts": {
