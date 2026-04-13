@@ -400,7 +400,7 @@ body:not(.chu-h6-color-custom)
 body {
   --chu-underline-height: 4px;
   --chu-underline-border-radius: 8px;
-  --chu-underline-opacity: 50%;
+  --chu-underline-opacity: 50%; /* Style Settings writes as e.g. "50%" via format: "%" */
   --chu-position-read: 0em;
   --chu-position-edit: -0.4em;
   --chu-padding: 0.5em;
@@ -417,7 +417,7 @@ body {
   position: absolute;
   bottom: var(--chu-position-read);
   left: 0;
-  width: var(--underline-width);
+  width: var(--underline-width, 0px);
   height: var(--chu-underline-height);
   border-radius: var(--chu-underline-border-radius);
   z-index: 0;
@@ -438,7 +438,7 @@ body.chu-width-full .markdown-preview-view :is(h1, h2, h3, h4, h5, h6)::before {
 ) {
   position: relative;
   padding-bottom: var(--chu-padding);
-  margin-bottom: 1em !important;
+  margin-bottom: 1em !important; /* override Obsidian's .cm-line default to make room for the underline */
 }
 
 .cm-line:is(
@@ -453,7 +453,7 @@ body.chu-width-full .markdown-preview-view :is(h1, h2, h3, h4, h5, h6)::before {
   position: absolute;
   bottom: var(--chu-position-edit);
   left: 0;
-  width: var(--underline-width);
+  width: var(--underline-width, 0px);
   height: var(--chu-underline-height);
   border-radius: var(--chu-underline-border-radius);
   z-index: 0;
@@ -481,7 +481,7 @@ body.chu-width-full
     .HyperMD-header-6
   )
   + .cm-line {
-  margin-top: 0.8em !important;
+  margin-top: 0.8em !important; /* offset the heading's margin-bottom so following content isn't cramped */
 }
 
 /* ========== DISABLE OPTIONS ========== */
@@ -510,7 +510,7 @@ body.chu-h6-color-disable .cm-line.HyperMD-header-6::before {
   display: none;
 }
 
-/* Per-note disable via YAML cssclass */
+/* Per-note disable via cssclass property */
 .markdown-preview-view.hide-heading-underlines
   :is(h1, h2, h3, h4, h5, h6)::before,
 .hide-heading-underlines
