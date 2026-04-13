@@ -393,7 +393,7 @@ body:not(.chu-h5-color-custom)
 body:not(.chu-h6-color-custom)
   .style-settings-container
   .setting-item[data-id='chu-h6-color-custom'] {
-  display: none !important;
+  display: none !important; /* Style Settings renders items with high specificity */
 }
 
 /* ========== DEFAULT VALUES ========== */
@@ -417,7 +417,7 @@ body {
   position: absolute;
   bottom: var(--chu-position-read);
   left: 0;
-  width: var(--underline-width, 0px);
+  width: var(--underline-width, 0px); /* set per-element by JS; no chu- prefix to distinguish from plugin-wide CSS vars */
   height: var(--chu-underline-height);
   border-radius: var(--chu-underline-border-radius);
   z-index: 0;
@@ -527,7 +527,7 @@ body.chu-h4-color-disable .cm-line.HyperMD-header-4,
 body.chu-h5-color-disable .cm-line.HyperMD-header-5,
 body.chu-h6-color-disable .cm-line.HyperMD-header-6 {
   padding-bottom: 0;
-  margin-bottom: 0 !important;
+  margin-bottom: 0 !important; /* reverts 1em override from enabled heading lines */
 }
 
 body.chu-h1-color-disable .cm-line.HyperMD-header-1 + .cm-line,
@@ -536,7 +536,7 @@ body.chu-h3-color-disable .cm-line.HyperMD-header-3 + .cm-line,
 body.chu-h4-color-disable .cm-line.HyperMD-header-4 + .cm-line,
 body.chu-h5-color-disable .cm-line.HyperMD-header-5 + .cm-line,
 body.chu-h6-color-disable .cm-line.HyperMD-header-6 + .cm-line {
-  margin-top: 0 !important;
+  margin-top: 0 !important; /* reverts 0.8em offset from enabled heading lines */
 }
 
 /* ========== PER-NOTE DISABLE ========== */
@@ -552,6 +552,37 @@ body.chu-h6-color-disable .cm-line.HyperMD-header-6 + .cm-line {
     .HyperMD-header-6
   )::before {
   display: none;
+}
+
+.markdown-preview-view.hide-heading-underlines
+  :is(h1, h2, h3, h4, h5, h6) {
+  padding-bottom: 0;
+}
+
+.hide-heading-underlines
+  .cm-line:is(
+    .HyperMD-header-1,
+    .HyperMD-header-2,
+    .HyperMD-header-3,
+    .HyperMD-header-4,
+    .HyperMD-header-5,
+    .HyperMD-header-6
+  ) {
+  padding-bottom: 0;
+  margin-bottom: 0 !important; /* reverts 1em override from enabled heading lines */
+}
+
+.hide-heading-underlines
+  .cm-line:is(
+    .HyperMD-header-1,
+    .HyperMD-header-2,
+    .HyperMD-header-3,
+    .HyperMD-header-4,
+    .HyperMD-header-5,
+    .HyperMD-header-6
+  )
+  + .cm-line {
+  margin-top: 0 !important; /* reverts 0.8em offset from enabled heading lines */
 }
 
 /* ========== H1 COLORS ========== */
