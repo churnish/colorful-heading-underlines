@@ -13,7 +13,15 @@
       "Bash(npm run build:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git pull:*)"
+      "Bash(git pull:*)",
+      "Bash(mv \"/Users/username/Library/Mobile Documents/iCloud~md~obsidian/Documents/Dev/.obsidian/plugins/colorful-heading-underlines/src\" ~/.Trash/colorful-heading-underlines-src)",
+      "Bash(mv \"/Users/username/Library/Mobile Documents/iCloud~md~obsidian/Documents/Dev/.obsidian/plugins/colorful-heading-underlines/tsconfig.json\" ~/.Trash/)",
+      "Bash(mv \"/Users/username/Library/Mobile Documents/iCloud~md~obsidian/Documents/Dev/.obsidian/plugins/colorful-heading-underlines/esbuild.config.mjs\" ~/.Trash/)",
+      "Bash(mv \"/Users/username/Library/Mobile Documents/iCloud~md~obsidian/Documents/Dev/.obsidian/plugins/colorful-heading-underlines/eslint.config.js\" ~/.Trash/)",
+      "Bash(cat .git/rebase-merge/head-name)",
+      "Bash(ls .git/rebase-merge/)",
+      "Bash(ls .git/rebase-apply/)",
+      "Bash(cat .git/REBASE_HEAD)"
     ],
     "deny": [],
     "ask": []
