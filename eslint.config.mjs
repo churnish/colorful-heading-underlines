@@ -25,7 +25,6 @@ export default [
         Node: 'readonly',
         NodeFilter: 'readonly',
         MutationObserver: 'readonly',
-        MouseEvent: 'readonly',
       },
     },
     rules: {

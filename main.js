@@ -1,5 +1,17 @@
 const { Plugin } = require('obsidian');
 
+const TEXT_NODE_FILTER = {
+  acceptNode(node) {
+    if (node.parentElement?.closest('.heading-collapse-indicator')) {
+      return NodeFilter.FILTER_REJECT;
+    }
+    if ((node.textContent?.trim().length ?? 0) > 0) {
+      return NodeFilter.FILTER_ACCEPT;
+    }
+    return NodeFilter.FILTER_REJECT;
+  },
+};
+
 class ColorfulHeadingUnderlinePlugin extends Plugin {
   onload() {
     /** @type {Map<Document, {observer: MutationObserver, removeSelection: () => void}>} */
@@ -9,19 +21,19 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
     this.app.workspace.onLayoutReady(() => {
       this.app.workspace.trigger('parse-style-settings');
       this.syncDocumentObservers();
-      this.processAllHeadings();
+      this.scheduleProcess();
     });
 
     this.registerEvent(
       this.app.workspace.on('file-open', () => {
-        this.processAllHeadings();
+        this.scheduleProcess();
       }),
     );
 
     this.registerEvent(
       this.app.workspace.on('layout-change', () => {
         this.syncDocumentObservers();
-        this.processAllHeadings();
+        this.scheduleProcess();
       }),
     );
   }
@@ -49,20 +61,20 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
           mutation.type === 'attributes' &&
           mutation.target === doc.body
         ) {
-          this.processAllHeadings();
+          this.scheduleProcess();
           return;
         }
 
         const target = mutation.target;
         if (target.nodeType === Node.ELEMENT_NODE) {
           if (target.closest('.markdown-preview-view, .cm-editor')) {
-            this.processAllHeadings();
+            this.scheduleProcess();
             return;
           }
         } else if (target.nodeType === Node.TEXT_NODE) {
           const parent = target.parentElement;
           if (parent?.closest('.markdown-preview-view, .cm-editor')) {
-            this.processAllHeadings();
+            this.scheduleProcess();
             return;
           }
         }
@@ -77,14 +89,7 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
       attributeFilter: ['class'],
     });
 
-    const selectionHandler = () => {
-      if (this.pendingProcess) return;
-      this.pendingProcess = true;
-      requestAnimationFrame(() => {
-        this.pendingProcess = false;
-        this.processAllHeadings();
-      });
-    };
+    const selectionHandler = () => this.scheduleProcess();
 
     doc.addEventListener('selectionchange', selectionHandler);
     const removeSelection = () =>
@@ -129,6 +134,15 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
     }
   }
 
+  scheduleProcess() {
+    if (this.pendingProcess) return;
+    this.pendingProcess = true;
+    requestAnimationFrame(() => {
+      this.pendingProcess = false;
+      this.processAllHeadings();
+    });
+  }
+
   // Style Settings classes live on the main window's body — canonical source
   getWidthMode() {
     if (document.body.classList.contains('chu-width-last')) return 'last';
@@ -137,24 +151,23 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
   }
 
   processAllHeadings() {
+    const mode = this.getWidthMode();
     for (const doc of this.getAllDocuments()) {
       doc
         .querySelectorAll(
           '.markdown-preview-view h1, .markdown-preview-view h2, .markdown-preview-view h3, .markdown-preview-view h4, .markdown-preview-view h5, .markdown-preview-view h6',
         )
-        .forEach((heading) => this.processHeading(heading));
+        .forEach((heading) => this.processHeading(heading, mode));
 
       doc
         .querySelectorAll(
           '.cm-line.HyperMD-header-1, .cm-line.HyperMD-header-2, .cm-line.HyperMD-header-3, .cm-line.HyperMD-header-4, .cm-line.HyperMD-header-5, .cm-line.HyperMD-header-6',
         )
-        .forEach((line) => this.processEditingLine(line));
+        .forEach((line) => this.processEditingLine(line, mode));
     }
   }
 
-  processHeading(heading) {
-    const mode = this.getWidthMode();
-
+  processHeading(heading, mode) {
     if (mode === 'full') {
       heading.style.removeProperty('--underline-width');
       return;
@@ -190,9 +203,7 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
     }
   }
 
-  processEditingLine(line) {
-    const mode = this.getWidthMode();
-
+  processEditingLine(line, mode) {
     if (mode === 'full') {
       line.style.removeProperty('--underline-width');
       return;
@@ -215,6 +226,7 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
       const rect = rects[i];
       if (rect.width === 0) continue;
 
+      // 2px tolerance absorbs sub-pixel rounding between rects on the same visual line
       if (
         !currentLineGroup ||
         Math.abs(rect.top - currentLineGroup.top) > 2
@@ -256,17 +268,7 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
     const walker = element.ownerDocument.createTreeWalker(
       element,
       NodeFilter.SHOW_TEXT,
-      {
-        acceptNode: (node) => {
-          if (node.parentElement?.closest('.heading-collapse-indicator')) {
-            return NodeFilter.FILTER_REJECT;
-          }
-          if ((node.textContent?.trim().length ?? 0) > 0) {
-            return NodeFilter.FILTER_ACCEPT;
-          }
-          return NodeFilter.FILTER_REJECT;
-        },
-      },
+      TEXT_NODE_FILTER,
     );
 
     let node;
