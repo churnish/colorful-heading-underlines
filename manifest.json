@@ -3,7 +3,7 @@
   "name": "Colorful Heading Underlines",
   "version": "0.1.0",
   "minAppVersion": "1.0.0",
-  "description": "Add colorful underlines to identify heading levels.",
+  "description": "Show colorful underlines to identify heading levels.",
   "author": "churnish",
   "isDesktopOnly": false
 }

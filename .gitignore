@@ -11,5 +11,4 @@ plans/
 
 .DS_Store
 data.json
-main.js
 package-lock.json

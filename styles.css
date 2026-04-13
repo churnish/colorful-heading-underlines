@@ -11,7 +11,7 @@ settings:
     -
         id: chu-underline-height
         title: Height
-        description: Height in pixels
+        description: Height in pixels.
         type: variable-number-slider
         default: 4
         min: 1
@@ -21,7 +21,7 @@ settings:
     -
         id: chu-underline-border-radius
         title: Border radius
-        description: Roundness in pixels
+        description: Roundness in pixels.
         type: variable-number-slider
         default: 8
         min: 0
@@ -31,7 +31,7 @@ settings:
     -
         id: chu-underline-opacity
         title: Opacity
-        description: Color opacity percentage
+        description: Color opacity percentage.
         type: variable-number-slider
         default: 50
         min: 0
@@ -41,7 +41,7 @@ settings:
     -
         id: chu-width-mode
         title: Width mode
-        description: How to determine underline width for multi-line headings
+        description: How to determine underline width for multi-line headings.
         type: class-select
         allowEmpty: false
         default: chu-width-widest
@@ -53,7 +53,7 @@ settings:
                 label: Last line
                 value: chu-width-last
             -
-                label: Full line width
+                label: Full width
                 value: chu-width-full
     -
         id: chu-position-heading
@@ -63,7 +63,7 @@ settings:
     -
         id: chu-position-read
         title: Reading view offset
-        description: Vertical offset in em units
+        description: Vertical offset in em units.
         type: variable-number-slider
         default: 0
         min: -1
@@ -73,7 +73,7 @@ settings:
     -
         id: chu-position-edit
         title: Editing view offset
-        description: Vertical offset in em units
+        description: Vertical offset in em units.
         type: variable-number-slider
         default: -0.4
         min: -1
@@ -83,7 +83,7 @@ settings:
     -
         id: chu-padding
         title: Bottom padding
-        description: Padding below heading text in em units
+        description: Padding below heading text in em units.
         type: variable-number-slider
         default: 0.5
         min: 0
@@ -373,6 +373,28 @@ settings:
         default: '#'
 
 */
+
+/* Conditional Style Settings visibility */
+body:not(.chu-h1-color-custom)
+  .style-settings-container
+  .setting-item[data-id='chu-h1-color-custom'],
+body:not(.chu-h2-color-custom)
+  .style-settings-container
+  .setting-item[data-id='chu-h2-color-custom'],
+body:not(.chu-h3-color-custom)
+  .style-settings-container
+  .setting-item[data-id='chu-h3-color-custom'],
+body:not(.chu-h4-color-custom)
+  .style-settings-container
+  .setting-item[data-id='chu-h4-color-custom'],
+body:not(.chu-h5-color-custom)
+  .style-settings-container
+  .setting-item[data-id='chu-h5-color-custom'],
+body:not(.chu-h6-color-custom)
+  .style-settings-container
+  .setting-item[data-id='chu-h6-color-custom'] {
+  display: none !important;
+}
 
 /* Default values */
 body {
