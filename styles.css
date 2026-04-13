@@ -417,7 +417,10 @@ body {
   position: absolute;
   bottom: var(--chu-position-read);
   left: 0;
-  width: var(--underline-width, 0px); /* set per-element by JS; no chu- prefix to distinguish from plugin-wide CSS vars */
+  width: var(
+    --underline-width,
+    0px
+  ); /* set per-element by JS; no chu- prefix to distinguish from plugin-wide CSS vars */
   height: var(--chu-underline-height);
   border-radius: var(--chu-underline-border-radius);
   z-index: 0;
@@ -554,8 +557,7 @@ body.chu-h6-color-disable .cm-line.HyperMD-header-6 + .cm-line {
   display: none;
 }
 
-.markdown-preview-view.hide-heading-underlines
-  :is(h1, h2, h3, h4, h5, h6) {
+.markdown-preview-view.hide-heading-underlines :is(h1, h2, h3, h4, h5, h6) {
   padding-bottom: 0;
 }
 

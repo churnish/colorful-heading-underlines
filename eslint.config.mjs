@@ -22,6 +22,7 @@ export default [
         document: 'readonly',
         window: 'readonly',
         requestAnimationFrame: 'readonly',
+        cancelAnimationFrame: 'readonly',
         Node: 'readonly',
         NodeFilter: 'readonly',
         MutationObserver: 'readonly',
@@ -33,6 +34,8 @@ export default [
       'obsidianmd/no-plugin-as-component': 'off',
       'obsidianmd/no-view-references-in-plugin': 'off',
       'obsidianmd/prefer-file-manager-trash-file': 'off',
+      // This plugin's core mechanism is setting --underline-width as a CSS custom property via JS
+      'obsidianmd/no-static-styles-assignment': 'off',
       'no-unused-vars': [
         'error',
         { argsIgnorePattern: '^_', caughtErrors: 'none' },

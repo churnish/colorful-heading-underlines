@@ -31,14 +31,14 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
     this.registerEvent(
       this.app.workspace.on('file-open', () => {
         this.scheduleProcess();
-      }),
+      })
     );
 
     this.registerEvent(
       this.app.workspace.on('layout-change', () => {
         this.syncDocumentObservers();
         this.scheduleProcess();
-      }),
+      })
     );
   }
 
@@ -66,10 +66,7 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
     // window's RAF doesn't run before the popout's paint (separate V8 isolate).
     const observer = new Win.MutationObserver((mutations) => {
       for (const mutation of mutations) {
-        if (
-          mutation.type === 'attributes' &&
-          mutation.target === doc.body
-        ) {
+        if (mutation.type === 'attributes' && mutation.target === doc.body) {
           this.processAllHeadings();
           return;
         }
@@ -103,9 +100,10 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
     const selectionHandler = () => {
       const sel = doc.getSelection();
       if (!sel || sel.rangeCount === 0) return;
-      const el = sel.anchorNode?.nodeType === Node.TEXT_NODE
-        ? sel.anchorNode.parentElement
-        : sel.anchorNode;
+      const el =
+        sel.anchorNode?.nodeType === Node.TEXT_NODE
+          ? sel.anchorNode.parentElement
+          : sel.anchorNode;
       if (!el?.closest('.markdown-preview-view, .cm-editor')) return;
       this.scheduleProcess();
     };
@@ -174,7 +172,7 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
     const mode = this.getWidthMode();
     for (const doc of this.getAllDocuments()) {
       for (const el of doc.querySelectorAll(
-        '.markdown-preview-view :is(h1, h2, h3, h4, h5, h6), .cm-line:is(.HyperMD-header-1, .HyperMD-header-2, .HyperMD-header-3, .HyperMD-header-4, .HyperMD-header-5, .HyperMD-header-6)',
+        '.markdown-preview-view :is(h1, h2, h3, h4, h5, h6), .cm-line:is(.HyperMD-header-1, .HyperMD-header-2, .HyperMD-header-3, .HyperMD-header-4, .HyperMD-header-5, .HyperMD-header-6)'
       )) {
         if (HEADING_TAGS.has(el.tagName)) {
           this.processHeading(el, mode);
@@ -254,10 +252,7 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
       if (rect.width === 0) continue;
 
       // 2px tolerance absorbs sub-pixel rounding between rects on the same visual line
-      if (
-        !currentLineGroup ||
-        Math.abs(rect.top - currentLineGroup.top) > 2
-      ) {
+      if (!currentLineGroup || Math.abs(rect.top - currentLineGroup.top) > 2) {
         currentLineGroup = {
           top: rect.top,
           left: rect.left,
@@ -297,7 +292,7 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
     const walker = element.ownerDocument.createTreeWalker(
       element,
       NodeFilter.SHOW_TEXT,
-      TEXT_NODE_FILTER,
+      TEXT_NODE_FILTER
     );
 
     let node;
