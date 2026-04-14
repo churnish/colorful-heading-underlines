@@ -16,11 +16,16 @@ const TEXT_NODE_FILTER = {
 
 const HEADING_TAGS = new Set(['H1', 'H2', 'H3', 'H4', 'H5', 'H6']);
 
+const HEADING_SELECTOR =
+  '.markdown-preview-view :is(h1, h2, h3, h4, h5, h6), .cm-line:is(.HyperMD-header-1, .HyperMD-header-2, .HyperMD-header-3, .HyperMD-header-4, .HyperMD-header-5, .HyperMD-header-6)';
+
 class ColorfulHeadingUnderlinePlugin extends Plugin {
   onload() {
     /** @type {Map<Document, {observer: MutationObserver, removeSelection: () => void}>} */
     this.documentObservers = new Map();
     this._rafId = null;
+    this._rafWin = null;
+    this._isProcessing = false;
 
     this.app.workspace.onLayoutReady(() => {
       this.app.workspace.trigger('parse-style-settings');
@@ -43,7 +48,9 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
   }
 
   onunload() {
-    if (this._rafId) cancelAnimationFrame(this._rafId);
+    if (this._rafId) {
+      (this._rafWin ?? window).cancelAnimationFrame(this._rafId);
+    }
     this.teardownAllObservers();
     this.clearAllWidths();
   }
@@ -60,11 +67,12 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
   }
 
   setupDocumentObserver(doc) {
-    const Win = doc.defaultView ?? window;
+    const win = doc.defaultView ?? window;
     // Process synchronously in MO callback — MO batches mutations internally,
     // and deferring to RAF causes flicker in popout windows because the main
     // window's RAF doesn't run before the popout's paint (separate V8 isolate).
-    const observer = new Win.MutationObserver((mutations) => {
+    const observer = new win.MutationObserver((mutations) => {
+      const containers = new Set();
       for (const mutation of mutations) {
         if (mutation.type === 'attributes' && mutation.target === doc.body) {
           this.processAllHeadings();
@@ -72,18 +80,13 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
         }
 
         const target = mutation.target;
-        if (target.nodeType === Node.ELEMENT_NODE) {
-          if (target.closest('.markdown-preview-view, .cm-editor')) {
-            this.processAllHeadings();
-            return;
-          }
-        } else if (target.nodeType === Node.TEXT_NODE) {
-          const parent = target.parentElement;
-          if (parent?.closest('.markdown-preview-view, .cm-editor')) {
-            this.processAllHeadings();
-            return;
-          }
-        }
+        const el =
+          target.nodeType === Node.TEXT_NODE ? target.parentElement : target;
+        const container = el?.closest('.markdown-preview-view, .cm-editor');
+        if (container) containers.add(container);
+      }
+      for (const container of containers) {
+        this.processContainer(container);
       }
     });
 
@@ -97,20 +100,26 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
 
     // Manual registration — target doc isn't known at plugin load time,
     // so registerDomEvent can't be used. Cleanup in teardown/sync.
+    let selectionTimer = null;
     const selectionHandler = () => {
-      const sel = doc.getSelection();
-      if (!sel || sel.rangeCount === 0) return;
-      const el =
-        sel.anchorNode?.nodeType === Node.TEXT_NODE
-          ? sel.anchorNode.parentElement
-          : sel.anchorNode;
-      if (!el?.closest('.markdown-preview-view, .cm-editor')) return;
-      this.scheduleProcess();
+      clearTimeout(selectionTimer);
+      selectionTimer = setTimeout(() => {
+        const sel = doc.getSelection();
+        if (!sel || sel.rangeCount === 0) return;
+        const el =
+          sel.anchorNode?.nodeType === Node.TEXT_NODE
+            ? sel.anchorNode.parentElement
+            : sel.anchorNode;
+        if (!el?.closest('.markdown-preview-view, .cm-editor')) return;
+        this.scheduleProcess(doc);
+      }, 150);
     };
 
     doc.addEventListener('selectionchange', selectionHandler);
-    const removeSelection = () =>
+    const removeSelection = () => {
+      clearTimeout(selectionTimer);
       doc.removeEventListener('selectionchange', selectionHandler);
+    };
 
     this.documentObservers.set(doc, { observer, removeSelection });
   }
@@ -153,10 +162,12 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
   }
 
   // Coalesces all pending triggers into one RAF — subsequent calls while a frame is queued are dropped
-  scheduleProcess() {
+  scheduleProcess(doc) {
     if (this._rafId) return;
-    this._rafId = requestAnimationFrame(() => {
+    this._rafWin = doc?.defaultView ?? window;
+    this._rafId = this._rafWin.requestAnimationFrame(() => {
       this._rafId = null;
+      this._rafWin = null;
       this.processAllHeadings();
     });
   }
@@ -169,32 +180,47 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
   }
 
   processAllHeadings() {
-    const mode = this.getWidthMode();
-    for (const doc of this.getAllDocuments()) {
-      for (const el of doc.querySelectorAll(
-        '.markdown-preview-view :is(h1, h2, h3, h4, h5, h6), .cm-line:is(.HyperMD-header-1, .HyperMD-header-2, .HyperMD-header-3, .HyperMD-header-4, .HyperMD-header-5, .HyperMD-header-6)'
-      )) {
-        if (HEADING_TAGS.has(el.tagName)) {
-          this.processHeading(el, mode);
-        } else {
-          this.processEditingLine(el, mode);
-        }
+    if (this._isProcessing) return;
+    this._isProcessing = true;
+    try {
+      const mode = this.getWidthMode();
+      if (mode === 'full') return; // CSS handles width: 100%
+      for (const doc of this.getAllDocuments()) {
+        const headings = doc.querySelectorAll(HEADING_SELECTOR);
+        this.processHeadings(headings, mode);
       }
+    } finally {
+      this._isProcessing = false;
     }
   }
 
-  processHeading(heading, mode) {
-    if (mode === 'full') {
-      // Must set inline — a prior mode may have written a px value that the CSS class rule can't override
-      heading.style.setProperty('--underline-width', '100%');
-      return;
-    }
+  processContainer(container) {
+    const mode = this.getWidthMode();
+    if (mode === 'full') return;
+    const headings = container.querySelectorAll(HEADING_SELECTOR);
+    this.processHeadings(headings, mode);
+  }
 
-    const textNodes = this.getTextNodes(heading);
-    if (textNodes.length === 0) {
-      heading.style.removeProperty('--underline-width');
-      return;
+  processHeadings(elements, mode) {
+    const updates = [];
+    for (const el of elements) {
+      try {
+        const width = HEADING_TAGS.has(el.tagName)
+          ? this.measureHeading(el, mode)
+          : this.measureEditingLine(el, mode);
+        updates.push({ el, width });
+      } catch {
+        updates.push({ el, width: 0 });
+      }
     }
+    for (const { el, width } of updates) {
+      this.applyWidth(el, width);
+    }
+  }
+
+  measureHeading(heading, mode) {
+    const textNodes = this.getTextNodes(heading);
+    if (textNodes.length === 0) return 0;
 
     const range = heading.ownerDocument.createRange();
 
@@ -205,7 +231,7 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
     range.setEnd(lastNode, lastNode.textContent?.length ?? 0);
 
     const rects = range.getClientRects();
-    if (rects.length === 0) return;
+    if (rects.length === 0) return 0;
 
     let width = 0;
     if (mode === 'last') {
@@ -218,32 +244,19 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
       }
     }
 
-    if (width > 0) {
-      heading.style.setProperty('--underline-width', `${width}px`);
-    } else {
-      heading.style.removeProperty('--underline-width');
-    }
+    return width;
   }
 
-  processEditingLine(line, mode) {
-    if (mode === 'full') {
-      // Must set inline — a prior mode may have written a px value that the CSS class rule can't override
-      line.style.setProperty('--underline-width', '100%');
-      return;
-    }
-
+  measureEditingLine(line, mode) {
     const headerSpans = line.querySelectorAll('.cm-header');
-    if (headerSpans.length === 0) {
-      line.style.removeProperty('--underline-width');
-      return;
-    }
+    if (headerSpans.length === 0) return 0;
 
     const range = line.ownerDocument.createRange();
     range.setStartBefore(headerSpans[0]);
     range.setEndAfter(headerSpans[headerSpans.length - 1]);
 
     const rects = range.getClientRects();
-    if (rects.length === 0) return;
+    if (rects.length === 0) return 0;
 
     // Group rects by visual line: merge left/right extents for rects whose
     // tops are within 2px, yielding one bounding box per wrapped line.
@@ -268,7 +281,7 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
       }
     }
 
-    if (lineGroups.length === 0) return;
+    if (lineGroups.length === 0) return 0;
 
     let width = 0;
     if (mode === 'last') {
@@ -283,10 +296,19 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
       }
     }
 
+    return width;
+  }
+
+  applyWidth(el, width) {
     if (width > 0) {
-      line.style.setProperty('--underline-width', `${width}px`);
+      const newVal = `${width}px`;
+      if (el.style.getPropertyValue('--underline-width') !== newVal) {
+        el.style.setProperty('--underline-width', newVal);
+      }
     } else {
-      line.style.removeProperty('--underline-width');
+      if (el.style.getPropertyValue('--underline-width')) {
+        el.style.removeProperty('--underline-width');
+      }
     }
   }
 
