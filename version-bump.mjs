@@ -31,7 +31,7 @@ if (!targetVersion) {
 // ── Sync shared docs ──
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const knowledgeDir = join(__dirname, '..', 'knowledge');
+const knowledgeDir = join(__dirname, '..', 'local');
 
 const sharedDocs = ['release-guide.md'];
 for (const doc of sharedDocs) {

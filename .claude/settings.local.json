@@ -21,7 +21,10 @@
       "Bash(cat .git/rebase-merge/head-name)",
       "Bash(ls .git/rebase-merge/)",
       "Bash(ls .git/rebase-apply/)",
-      "Bash(cat .git/REBASE_HEAD)"
+      "Bash(cat .git/REBASE_HEAD)",
+      "Bash(/Applications/Obsidian.app/Contents/MacOS/Obsidian --remote-debugging-port=9222)",
+      "Bash(break)",
+      "Bash(cat .git/rebase-merge/onto)"
     ],
     "deny": [],
     "ask": []
