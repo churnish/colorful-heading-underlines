@@ -191,7 +191,10 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
     }
 
     const textNodes = this.getTextNodes(heading);
-    if (textNodes.length === 0) return;
+    if (textNodes.length === 0) {
+      heading.style.removeProperty('--underline-width');
+      return;
+    }
 
     const range = heading.ownerDocument.createRange();
 

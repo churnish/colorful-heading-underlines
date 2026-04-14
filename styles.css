@@ -140,7 +140,7 @@ settings:
         title: H1 custom underline color
         type: variable-color
         format: hex
-        default: '#'
+        default: '#' # intentional — bare '#' renders no underline until user picks a color
     -
         id: chu-h2-color
         title: H2 underline color
