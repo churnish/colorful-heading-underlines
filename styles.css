@@ -23,9 +23,9 @@ settings:
         title: Border radius
         description: Roundness in pixels.
         type: variable-number-slider
-        default: 8
+        default: 2
         min: 0
-        max: 20
+        max: 10
         step: 1
         format: px
     -
@@ -34,7 +34,7 @@ settings:
         description: Color opacity percentage.
         type: variable-number-slider
         default: 50
-        min: 0
+        min: 10
         max: 100
         step: 5
         format: "%"
@@ -85,10 +85,10 @@ settings:
         title: Bottom padding
         description: Padding below heading text in em units.
         type: variable-number-slider
-        default: 0.5
+        default: 0.4
         min: 0
         max: 2
-        step: 0.1
+        step: 0.05
         format: em
     -
         id: chu-colors-heading
@@ -399,17 +399,18 @@ body:not(.chu-h6-color-custom)
 /* ========== DEFAULT VALUES ========== */
 body {
   --chu-underline-height: 4px;
-  --chu-underline-border-radius: 8px;
+  --chu-underline-border-radius: 2px;
   --chu-underline-opacity: 50%; /* Style Settings writes as e.g. "50%" via format: "%" */
   --chu-position-read: 0em;
   --chu-position-edit: 0em;
-  --chu-padding: 0.5em;
+  --chu-padding: 0.4em;
 }
 
 /* ========== READING VIEW ========== */
 .markdown-preview-view :is(h1, h2, h3, h4, h5, h6) {
   padding-bottom: var(--chu-padding);
   position: relative;
+  z-index: 0;
 }
 
 .markdown-preview-view :is(h1, h2, h3, h4, h5, h6)::before {
@@ -423,7 +424,7 @@ body {
   ); /* set per-element by JS; no chu- prefix to distinguish from plugin-wide CSS vars */
   height: var(--chu-underline-height);
   border-radius: var(--chu-underline-border-radius);
-  z-index: 0;
+  z-index: -1;
 }
 
 body.chu-width-full .markdown-preview-view :is(h1, h2, h3, h4, h5, h6)::before {
@@ -443,6 +444,7 @@ body.chu-width-full .markdown-preview-view :is(h1, h2, h3, h4, h5, h6)::before {
     .HyperMD-header-6
   ) {
   position: relative;
+  z-index: 0; /* creates stacking context so ::after z-index: -1 renders behind text, not behind the element */
   padding-bottom: var(--chu-padding);
 }
 
@@ -462,7 +464,7 @@ body.chu-width-full .markdown-preview-view :is(h1, h2, h3, h4, h5, h6)::before {
   width: var(--underline-width, 0px);
   height: var(--chu-underline-height);
   border-radius: var(--chu-underline-border-radius);
-  z-index: 0;
+  z-index: -1;
 }
 
 body.chu-width-full
