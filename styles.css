@@ -431,7 +431,8 @@ body.chu-width-full .markdown-preview-view :is(h1, h2, h3, h4, h5, h6)::before {
 }
 
 /* ========== EDITING VIEW ========== */
-/* Specificity 0-4-0 to beat Obsidian's .markdown-source-view.mod-cm6 .cm-content > * (0-3-0). Padding-bottom instead of margin-bottom because CM6's height map excludes margins, causing arrow-key navigation to skip lines. */
+/* Specificity 0-3-0 matches Obsidian's .markdown-source-view.mod-cm6 .cm-line (0-3-0) — plugin wins by source order. Padding-bottom (not margin) because CM6's height map excludes margins, breaking arrow-key navigation. */
+/* ::after (not ::before) because themes use ::before on .cm-active for active-line highlights. Reading view uses ::before since it has no .cm-active conflict. */
 .markdown-source-view
   .cm-line:is(
     .HyperMD-header-1,
@@ -442,10 +443,11 @@ body.chu-width-full .markdown-preview-view :is(h1, h2, h3, h4, h5, h6)::before {
     .HyperMD-header-6
   ) {
   position: relative;
-  padding-bottom: var(--chu-padding) !important;
+  padding-bottom: var(--chu-padding);
 }
 
-.cm-line:is(
+.markdown-source-view
+  .cm-line:is(
     .HyperMD-header-1,
     .HyperMD-header-2,
     .HyperMD-header-3,
@@ -464,6 +466,7 @@ body.chu-width-full .markdown-preview-view :is(h1, h2, h3, h4, h5, h6)::before {
 }
 
 body.chu-width-full
+  .markdown-source-view
   .cm-line:is(
     .HyperMD-header-1,
     .HyperMD-header-2,
@@ -508,7 +511,7 @@ body.chu-h3-color-disable .markdown-preview-view h3,
 body.chu-h4-color-disable .markdown-preview-view h4,
 body.chu-h5-color-disable .markdown-preview-view h5,
 body.chu-h6-color-disable .markdown-preview-view h6 {
-  padding-bottom: 0;
+  padding-bottom: 0 !important;
 }
 
 body.chu-h1-color-disable .cm-line.HyperMD-header-1,
@@ -517,7 +520,7 @@ body.chu-h3-color-disable .cm-line.HyperMD-header-3,
 body.chu-h4-color-disable .cm-line.HyperMD-header-4,
 body.chu-h5-color-disable .cm-line.HyperMD-header-5,
 body.chu-h6-color-disable .cm-line.HyperMD-header-6 {
-  padding-bottom: 0 !important;
+  padding-bottom: 0;
 }
 
 /* ========== PER-NOTE DISABLE ========== */
@@ -536,7 +539,7 @@ body.chu-h6-color-disable .cm-line.HyperMD-header-6 {
 }
 
 .markdown-preview-view.hide-heading-underlines :is(h1, h2, h3, h4, h5, h6) {
-  padding-bottom: 0;
+  padding-bottom: 0 !important;
 }
 
 .hide-heading-underlines
@@ -548,7 +551,7 @@ body.chu-h6-color-disable .cm-line.HyperMD-header-6 {
     .HyperMD-header-5,
     .HyperMD-header-6
   ) {
-  padding-bottom: 0 !important;
+  padding-bottom: 0;
 }
 
 /* ========== H1 COLORS ========== */
