@@ -1,19 +1,5 @@
 const { Plugin } = require('obsidian');
 
-// Exclude collapse chevrons — Obsidian renders them inside heading elements
-// and their text content would skew the range width measurement.
-const TEXT_NODE_FILTER = {
-  acceptNode(node) {
-    if (node.parentElement?.closest('.heading-collapse-indicator')) {
-      return NodeFilter.FILTER_REJECT;
-    }
-    if ((node.textContent?.trim().length ?? 0) > 0) {
-      return NodeFilter.FILTER_ACCEPT;
-    }
-    return NodeFilter.FILTER_REJECT;
-  },
-};
-
 const HEADING_TAGS = new Set(['H1', 'H2', 'H3', 'H4', 'H5', 'H6']);
 
 const HEADING_SELECTOR =
@@ -239,39 +225,7 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
     }
 
     if (rects.length === 0) return 0;
-
-    // Group rects by visual line. Half the first rect's height as tolerance
-    // separates same-line alignment offsets from wrapped-line jumps.
-    const lineGroups = [];
-    let currentLineGroup = null;
-    const tolerance = rects[0].height / 2;
-
-    for (const rect of rects) {
-      if (!currentLineGroup || Math.abs(rect.top - currentLineGroup.top) > tolerance) {
-        currentLineGroup = { top: rect.top, left: rect.left, right: rect.right };
-        lineGroups.push(currentLineGroup);
-      } else {
-        currentLineGroup.left = Math.min(currentLineGroup.left, rect.left);
-        currentLineGroup.right = Math.max(currentLineGroup.right, rect.right);
-      }
-    }
-
-    if (lineGroups.length === 0) return 0;
-
-    let width = 0;
-    if (mode === 'last') {
-      const lastLineGroup = lineGroups[lineGroups.length - 1];
-      width = lastLineGroup.right - lastLineGroup.left;
-    } else {
-      for (const lineGroup of lineGroups) {
-        const lineWidth = lineGroup.right - lineGroup.left;
-        if (lineWidth > width) {
-          width = lineWidth;
-        }
-      }
-    }
-
-    return width;
+    return this.resolveWidth(rects, mode);
   }
 
   measureEditingLine(line, mode) {
@@ -284,23 +238,26 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
 
     const rects = range.getClientRects();
     if (rects.length === 0) return 0;
+    return this.resolveWidth(rects, mode);
+  }
 
-    // Group rects by visual line: merge left/right extents for rects on
-    // the same wrapped line. Half the first rect's height as tolerance.
+  // Group rects by visual line, then return the widest or last line's width.
+  // Tolerance uses the smallest rect height to avoid merging distinct visual
+  // lines when headings contain mixed-height inline content (images, math).
+  resolveWidth(rects, mode) {
     const lineGroups = [];
     let currentLineGroup = null;
-    const tolerance = rects.length > 0 ? rects[0].height / 2 : 0;
+    let minHeight = Infinity;
 
-    for (let i = 0; i < rects.length; i++) {
-      const rect = rects[i];
+    for (const rect of rects) {
       if (rect.width === 0) continue;
+      if (rect.height < minHeight) minHeight = rect.height;
 
-      if (!currentLineGroup || Math.abs(rect.top - currentLineGroup.top) > tolerance) {
-        currentLineGroup = {
-          top: rect.top,
-          left: rect.left,
-          right: rect.right,
-        };
+      if (
+        !currentLineGroup ||
+        Math.abs(rect.top - currentLineGroup.top) > minHeight / 2
+      ) {
+        currentLineGroup = { top: rect.top, left: rect.left, right: rect.right };
         lineGroups.push(currentLineGroup);
       } else {
         currentLineGroup.left = Math.min(currentLineGroup.left, rect.left);
@@ -339,20 +296,6 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
     }
   }
 
-  getTextNodes(element) {
-    const textNodes = [];
-    const walker = element.ownerDocument.createTreeWalker(
-      element,
-      NodeFilter.SHOW_TEXT,
-      TEXT_NODE_FILTER
-    );
-
-    let node;
-    while ((node = walker.nextNode())) {
-      textNodes.push(node);
-    }
-    return textNodes;
-  }
 }
 
 module.exports = ColorfulHeadingUnderlinePlugin;

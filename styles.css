@@ -443,6 +443,7 @@ body {
   pointer-events: none;
 }
 
+/* Overrides JS-set --underline-width — JS short-circuits in full mode */
 body.chu-width-full .markdown-preview-view :is(h1, h2, h3, h4, h5, h6)::after {
   width: 100%;
 }
@@ -476,12 +477,13 @@ body.chu-width-full .markdown-preview-view :is(h1, h2, h3, h4, h5, h6)::after {
   position: absolute;
   bottom: var(--chu-position-edit);
   left: 0;
-  width: var(--underline-width, 0px);
+  width: var(--underline-width, 0px); /* set per-element by main.js */
   height: var(--chu-underline-height);
   border-radius: var(--chu-underline-border-radius);
   pointer-events: none;
 }
 
+/* Overrides JS-set --underline-width — JS short-circuits in full mode */
 body.chu-width-full
   .markdown-source-view
   .cm-line:is(
@@ -848,6 +850,8 @@ body.chu-hide-tag-background .HyperMD-header .cm-hashtag {
   border-radius: 0 !important;
 }
 
+/* CM6 splits tags into .cm-hashtag-begin (#) and .cm-hashtag-end (name) —
+   hover on either half must underline both via :has() + adjacent sibling */
 body.chu-hide-tag-background
   .markdown-preview-view
   :is(h1, h2, h3, h4, h5, h6)
