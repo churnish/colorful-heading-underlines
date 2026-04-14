@@ -68,17 +68,17 @@ settings:
         default: 0
         min: -1
         max: 1
-        step: 0.1
+        step: 0.05
         format: em
     -
         id: chu-position-edit
         title: Editing view offset
         description: Vertical offset in em units.
         type: variable-number-slider
-        default: -0.4
+        default: 0
         min: -1
         max: 1
-        step: 0.1
+        step: 0.05
         format: em
     -
         id: chu-padding
@@ -402,7 +402,7 @@ body {
   --chu-underline-border-radius: 8px;
   --chu-underline-opacity: 50%; /* Style Settings writes as e.g. "50%" via format: "%" */
   --chu-position-read: 0em;
-  --chu-position-edit: -0.4em;
+  --chu-position-edit: 0em;
   --chu-padding: 0.5em;
 }
 
@@ -431,17 +431,18 @@ body.chu-width-full .markdown-preview-view :is(h1, h2, h3, h4, h5, h6)::before {
 }
 
 /* ========== EDITING VIEW ========== */
-.cm-line:is(
-  .HyperMD-header-1,
-  .HyperMD-header-2,
-  .HyperMD-header-3,
-  .HyperMD-header-4,
-  .HyperMD-header-5,
-  .HyperMD-header-6
-) {
+/* Specificity 0-4-0 to beat Obsidian's .markdown-source-view.mod-cm6 .cm-content > * (0-3-0). Padding-bottom instead of margin-bottom because CM6's height map excludes margins, causing arrow-key navigation to skip lines. */
+.markdown-source-view
+  .cm-line:is(
+    .HyperMD-header-1,
+    .HyperMD-header-2,
+    .HyperMD-header-3,
+    .HyperMD-header-4,
+    .HyperMD-header-5,
+    .HyperMD-header-6
+  ) {
   position: relative;
-  padding-bottom: var(--chu-padding);
-  margin-bottom: 1em !important; /* override Obsidian's .cm-line default to make room for the underline */
+  padding-bottom: var(--chu-padding) !important;
 }
 
 .cm-line:is(
@@ -472,19 +473,6 @@ body.chu-width-full
     .HyperMD-header-6
   )::after {
   width: 100%;
-}
-
-/* ========== HEADING SIBLING SPACING ========== */
-.cm-line:is(
-    .HyperMD-header-1,
-    .HyperMD-header-2,
-    .HyperMD-header-3,
-    .HyperMD-header-4,
-    .HyperMD-header-5,
-    .HyperMD-header-6
-  )
-  + .cm-line {
-  margin-top: 0.8em !important; /* offset the heading's margin-bottom so following content isn't cramped */
 }
 
 /* ========== DISABLE OPTIONS ========== */
@@ -529,17 +517,7 @@ body.chu-h3-color-disable .cm-line.HyperMD-header-3,
 body.chu-h4-color-disable .cm-line.HyperMD-header-4,
 body.chu-h5-color-disable .cm-line.HyperMD-header-5,
 body.chu-h6-color-disable .cm-line.HyperMD-header-6 {
-  padding-bottom: 0;
-  margin-bottom: 0 !important; /* reverts 1em override from enabled heading lines */
-}
-
-body.chu-h1-color-disable .cm-line.HyperMD-header-1 + .cm-line,
-body.chu-h2-color-disable .cm-line.HyperMD-header-2 + .cm-line,
-body.chu-h3-color-disable .cm-line.HyperMD-header-3 + .cm-line,
-body.chu-h4-color-disable .cm-line.HyperMD-header-4 + .cm-line,
-body.chu-h5-color-disable .cm-line.HyperMD-header-5 + .cm-line,
-body.chu-h6-color-disable .cm-line.HyperMD-header-6 + .cm-line {
-  margin-top: 0 !important; /* reverts 0.8em offset from enabled heading lines */
+  padding-bottom: 0 !important;
 }
 
 /* ========== PER-NOTE DISABLE ========== */
@@ -570,21 +548,7 @@ body.chu-h6-color-disable .cm-line.HyperMD-header-6 + .cm-line {
     .HyperMD-header-5,
     .HyperMD-header-6
   ) {
-  padding-bottom: 0;
-  margin-bottom: 0 !important; /* reverts 1em override from enabled heading lines */
-}
-
-.hide-heading-underlines
-  .cm-line:is(
-    .HyperMD-header-1,
-    .HyperMD-header-2,
-    .HyperMD-header-3,
-    .HyperMD-header-4,
-    .HyperMD-header-5,
-    .HyperMD-header-6
-  )
-  + .cm-line {
-  margin-top: 0 !important; /* reverts 0.8em offset from enabled heading lines */
+  padding-bottom: 0 !important;
 }
 
 /* ========== H1 COLORS ========== */
