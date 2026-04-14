@@ -1,9 +1,9 @@
 {
-  "id": "colorful-heading-underlines",
-  "name": "Colorful Heading Underlines",
-  "version": "1.0.0",
-  "minAppVersion": "1.0.0",
-  "description": "Show colorful underlines to identify heading levels.",
-  "author": "churnish",
-  "isDesktopOnly": false
+	"id": "colorful-heading-underlines",
+	"name": "Colorful Heading Underlines",
+	"version": "1.1.0",
+	"minAppVersion": "1.0.0",
+	"description": "Show colorful underlines to identify heading levels.",
+	"author": "churnish",
+	"isDesktopOnly": false
 }
