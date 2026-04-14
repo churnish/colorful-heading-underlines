@@ -828,10 +828,12 @@ body.chu-hide-link-underline
   text-decoration-line: underline !important;
 }
 
-body.chu-hide-link-underline .HyperMD-header a.cm-underline {
+body.chu-hide-link-underline .HyperMD-header .cm-underline,
+body.chu-hide-link-underline .HyperMD-header .cm-url {
   text-decoration-line: none !important;
 }
-body.chu-hide-link-underline .HyperMD-header a.cm-underline:hover {
+body.chu-hide-link-underline .HyperMD-header .cm-underline:hover,
+body.chu-hide-link-underline .HyperMD-header .cm-url:hover {
   text-decoration-line: underline !important;
 }
 
@@ -840,6 +842,21 @@ body.chu-hide-tag-background
   .markdown-preview-view
   :is(h1, h2, h3, h4, h5, h6)
   a.tag,
-body.chu-hide-tag-background .HyperMD-header a.tag {
+body.chu-hide-tag-background .HyperMD-header .cm-hashtag {
   background-color: transparent !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+body.chu-hide-tag-background
+  .markdown-preview-view
+  :is(h1, h2, h3, h4, h5, h6)
+  a.tag:hover,
+body.chu-hide-tag-background .HyperMD-header .cm-hashtag-begin:hover,
+body.chu-hide-tag-background .HyperMD-header .cm-hashtag-begin:hover + .cm-hashtag-end,
+body.chu-hide-tag-background .HyperMD-header .cm-hashtag-end:hover,
+body.chu-hide-tag-background
+  .HyperMD-header
+  .cm-hashtag-begin:has(+ .cm-hashtag-end:hover) {
+  text-decoration-line: underline !important;
 }

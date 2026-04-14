@@ -219,27 +219,54 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
   }
 
   measureHeading(heading, mode) {
-    const textNodes = this.getTextNodes(heading);
-    if (textNodes.length === 0) return 0;
+    // Collect bounding rects from direct children, skipping collapse indicator.
+    // Elements use getBoundingClientRect (includes padding, icons, pseudo-elements).
+    // Text nodes use Range.getClientRects (per-line rects for wrapped text).
+    const rects = [];
+    for (const child of heading.childNodes) {
+      if (child.nodeType === Node.ELEMENT_NODE) {
+        if (child.matches('.heading-collapse-indicator')) continue;
+        const rect = child.getBoundingClientRect();
+        if (rect.width > 0) rects.push(rect);
+      } else if (child.nodeType === Node.TEXT_NODE) {
+        if (!child.textContent?.trim()) continue;
+        const range = heading.ownerDocument.createRange();
+        range.selectNodeContents(child);
+        for (const rect of range.getClientRects()) {
+          if (rect.width > 0) rects.push(rect);
+        }
+      }
+    }
 
-    const range = heading.ownerDocument.createRange();
-
-    const firstNode = textNodes[0];
-    const lastNode = textNodes[textNodes.length - 1];
-
-    range.setStart(firstNode, 0);
-    range.setEnd(lastNode, lastNode.textContent?.length ?? 0);
-
-    const rects = range.getClientRects();
     if (rects.length === 0) return 0;
+
+    // Group rects by visual line. Half the first rect's height as tolerance
+    // separates same-line alignment offsets from wrapped-line jumps.
+    const lineGroups = [];
+    let currentLineGroup = null;
+    const tolerance = rects[0].height / 2;
+
+    for (const rect of rects) {
+      if (!currentLineGroup || Math.abs(rect.top - currentLineGroup.top) > tolerance) {
+        currentLineGroup = { top: rect.top, left: rect.left, right: rect.right };
+        lineGroups.push(currentLineGroup);
+      } else {
+        currentLineGroup.left = Math.min(currentLineGroup.left, rect.left);
+        currentLineGroup.right = Math.max(currentLineGroup.right, rect.right);
+      }
+    }
+
+    if (lineGroups.length === 0) return 0;
 
     let width = 0;
     if (mode === 'last') {
-      width = rects[rects.length - 1].width;
+      const lastLineGroup = lineGroups[lineGroups.length - 1];
+      width = lastLineGroup.right - lastLineGroup.left;
     } else {
-      for (let i = 0; i < rects.length; i++) {
-        if (rects[i].width > width) {
-          width = rects[i].width;
+      for (const lineGroup of lineGroups) {
+        const lineWidth = lineGroup.right - lineGroup.left;
+        if (lineWidth > width) {
+          width = lineWidth;
         }
       }
     }
@@ -258,17 +285,17 @@ class ColorfulHeadingUnderlinePlugin extends Plugin {
     const rects = range.getClientRects();
     if (rects.length === 0) return 0;
 
-    // Group rects by visual line: merge left/right extents for rects whose
-    // tops are within 2px, yielding one bounding box per wrapped line.
+    // Group rects by visual line: merge left/right extents for rects on
+    // the same wrapped line. Half the first rect's height as tolerance.
     const lineGroups = [];
     let currentLineGroup = null;
+    const tolerance = rects.length > 0 ? rects[0].height / 2 : 0;
 
     for (let i = 0; i < rects.length; i++) {
       const rect = rects[i];
       if (rect.width === 0) continue;
 
-      // 2px tolerance absorbs sub-pixel rounding between rects on the same visual line
-      if (!currentLineGroup || Math.abs(rect.top - currentLineGroup.top) > 2) {
+      if (!currentLineGroup || Math.abs(rect.top - currentLineGroup.top) > tolerance) {
         currentLineGroup = {
           top: rect.top,
           left: rect.left,
